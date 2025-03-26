@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>智能斯诺克大师的抖音</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #e6f3ff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .corner-tip {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 16px;
+            color: #333;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .guide-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 9999;
+            display: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .guide-text {
+            position: fixed;
+            top: 25vh;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #2c5282;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            z-index: 10000;
+            display: block            background: #ebf8ff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            white-space: nowrap;
+        }
+        .guide-arrow {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 20px solid #2c5282;
+            transform: rotate(-45deg);
+            margin-top: 10px;
+        }
+        .main-content {
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .action-button {
+            display: inline-block;
+            background: #4a90e2;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            margin: 15px 0;
+            box-shadow: 0 4px 6px rgba(74, 144, 226, 0.2);
+            -webkit-tap-highlight-color: transparent;
+            transition: all 0.3s ease;
+        }
+        .action-button:active {
+            background: #357abd;
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(74, 144, 226, 0.2);
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="guideOverlay" class="guide-overlay">
+        <div class="guide-text">
+            点击右上方（···），使用默认浏览器打开
+        </div>
+    </div>
+    <script>
+        // 直接跳转逻辑
+        const config = {
+            appSchema: "snssdk1128://user/profile/111235146868",
+            webUrl: "https://www.douyin.com/user/MS4wLjABAAAAM20qCMCSM13yw50coOyjjnn5TC11Bl_NOzRy833pFwA?from_tab_name=main",
+            iosStore: "https://apps.apple.com/cn/app/dou-yin/id1142110895",
+            androidStore: "https://play.google.com/store/apps/details?id=com.ss.android.ugc.aweme"
+        };
+
+        function smartJump() {
+            const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+            const isIOS = /iPhone|iPad/i.test(navigator.userAgent);
+            const isWeChat = /MicroMessenger/i.test(navigator.userAgent);
+
+            if (isWeChat) {
+                document.getElementById('guideOverlay').style.display = 'block';
+                return;
+            }
+
+            if (isMobile) {
+                const timeout = setTimeout(() => {
+                    window.location = isIOS ? config.iosStore : config.androidStore;
+                }, 1500);
+
+                window.addEventListener('blur', () => clearTimeout(timeout));
+                window.location.href = config.appSchema;
+            } else {
+                window.location.href = config.webUrl;
+            }
+        }
+
+        // 页面加载完成后直接执行跳转
+        window.onload = smartJump;
+    </script>
+
+    <!-- 降级处理 -->
+    <noscript>
+        <center style="padding:50px">
+            <a href="https://www.douyin.com/user/MS4wLjABAAAAM20qCMCSM13yw50coOyjjnn5TC11Bl_NOzRy833pFwA?from_tab_name=main" style="color:#FE2C55">
+                点击进入抖音主页
+            </a>
+        </center>
+    </noscript>
+</body>
+</html>
